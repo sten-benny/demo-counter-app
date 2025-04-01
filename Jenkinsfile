@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage("Git checkout") {
             steps {
-                git 'https://github.com/sten-benny/demo-counter-app.git'
+                git branch: 'main', url: 'https://github.com/sten-benny/demo-counter-app.git'
             }
         }
         stage("Unit test") {
