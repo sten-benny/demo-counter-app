@@ -1,73 +1,27 @@
-pipeline{
-    
-    agent any 
-    
+pipeline {
+    agent any
+    //tools {
+    //    maven 'maven'  // Ensure this matches the Maven tool name configured in Jenkins
+    //}
     stages {
-        
-        stage('Git Checkout'){
-            
-            steps{
-                
-                script{
-                    
-                    git branch: 'main', url: 'https://github.com/vikash-kumar01/mrdevops_javaapplication.git'
+        stage("Git checkout") {
+            steps {
+                git 'https://github.com/sten-benny/Maven-Web-Project.git'
+            }
+        }
+        stage("Unit test") {
+            steps {
+                script {
+                sh 'mvn test'
                 }
             }
         }
-        stage('UNIT testing'){
-            
-            steps{
-                
+        stage("Maven build") {
+            steps {
                 script{
-                    
-                    sh 'mvn test'
-                }
-            }
-        }
-        stage('Integration testing'){
-            
-            steps{
-                
-                script{
-                    
-                    sh 'mvn verify -DskipUnitTests'
-                }
-            }
-        }
-        stage('Maven build'){
-            
-            steps{
-                
-                script{
-                    
                     sh 'mvn clean install'
                 }
             }
         }
-        stage('Static code analysis'){
-            
-            steps{
-                
-                script{
-                    
-                    withSonarQubeEnv(credentialsId: 'sonar-api') {
-                        
-                        sh 'mvn clean package sonar:sonar'
-                    }
-                   }
-                    
-                }
-            }
-            stage('Quality Gate Status'){
-                
-                steps{
-                    
-                    script{
-                        
-                        waitForQualityGate abortPipeline: false, credentialsId: 'sonar-api'
-                    }
-                }
-            }
-        }
-        
+    }
 }
