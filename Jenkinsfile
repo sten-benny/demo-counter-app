@@ -23,5 +23,14 @@ pipeline {
                 }
             }
         }
+        stage("Static code analaysis") {
+            steps {
+                script{
+                    withSonarQubeEnv(credentialsId: 'sonarid') {
+                    sh 'mvn clean package sonar:sonar'
+                    }
+                }
+            }
+        }
     }
 }
