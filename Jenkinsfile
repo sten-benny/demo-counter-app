@@ -23,22 +23,22 @@ pipeline {
                 }
             }
         }
-  //      stage("Static code analaysis") {
-  //          steps {
-  //              script{
-   //                 withSonarQubeEnv(credentialsId: 'sonarid') {
-   //                 sh 'mvn clean package sonar:sonar'
-   //                 }
-   //             }
-//         }
-  //      }
-//       stage("Quality Gate") {
-//            steps {
- //               script {
- //               waitForQualityGate abortPipeline: false, credentialsId: 'sonarid'
-  //              }
-   //         }
-   //     }      
+        stage("Static code analaysis") {
+           steps {
+                script{
+                    withSonarQubeEnv(credentialsId: 'sonarid') {
+                    sh 'mvn clean package sonar:sonar'
+                    }
+                }
+         }
+        }
+       stage("Quality Gate") {
+            steps {
+                script {
+                waitForQualityGate abortPipeline: false, credentialsId: 'sonarid'
+                }
+            }
+        }      
         stage("Upload file to nexus") {
             steps {
                 script {
